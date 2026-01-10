@@ -18,7 +18,7 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware
 const allowedOrigins = [
-  'https://onchain-fantasy-game.vercel.app',
+  'https://expense-tracker-pied-ten.vercel.app/',
   'http://localhost:3000'
 ];
 
