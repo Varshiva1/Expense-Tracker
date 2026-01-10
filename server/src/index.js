@@ -6,9 +6,9 @@ import { dirname, join } from 'path';
 
 dotenv.config();
 
-import { init } from './src/config/database.js';
-import authRoutes from './src/routes/auth.js';
-import expenseRoutes from './src/routes/expenses.js';
+import { init } from './config/database.js';
+import authRoutes from './routes/auth.js';
+import expenseRoutes from './routes/expenses.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -18,9 +18,10 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware
 const allowedOrigins = [
-  'https://expense-tracker-pied-ten.vercel.app/',
+  'https://expense-tracker-pied-ten.vercel.app',
   'http://localhost:3000'
 ];
+
 
 app.use(cors({
   origin: (origin, callback) => {
@@ -37,7 +38,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Serve static files from client directory
-app.use(express.static(join(__dirname, '../client')));
+app.use(express.static(join(__dirname, '../../client')));
+
 
 // Routes
 app.use('/api/auth', authRoutes);

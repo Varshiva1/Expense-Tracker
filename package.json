@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "Expense Tracker with Node.js, Express, PostgreSQL, JWT, and Chart.js",
   "type": "module",
-  "main": "server/index.js",
+  "main": "server/src/index.js",
   "scripts": {
-    "start": "node server/index.js",
-    "dev": "nodemon server/index.js",
+    "start": "node server/src/index.js",
+    "dev": "nodemon server/src/index.js",
     "build-css": "tailwindcss -i ./client/input.css -o ./client/styles.css --minify",
     "watch-css": "tailwindcss -i ./client/input.css -o ./client/styles.css --watch"
   },
