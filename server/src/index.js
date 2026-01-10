@@ -19,18 +19,21 @@ const PORT = process.env.PORT || 3000;
 // Middleware
 const allowedOrigins = [
   'http://localhost:3000',
-  'https://expense-tracker-kpun.vercel.app' // Your backend URL
+  'https://expense-tracker-kpun.vercel.app',
+  'https://expense-tracker-pied-ten.vercel.app'
 ];
 
 app.use(cors({
   origin: (origin, callback) => {
-    // Allow requests with no origin (like from Postman)
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin)) return callback(null, true);
-    return callback(new Error('Not allowed by CORS'));
+    if (!origin) return callback(null, true); // Postman / server-to-server
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(null, false); // block silently
   },
   credentials: true
 }));
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
