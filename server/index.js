@@ -6,9 +6,9 @@ import { dirname, join } from 'path';
 
 dotenv.config();
 
-import { init } from './config/database.js';
-import authRoutes from './routes/auth.js';
-import expenseRoutes from './routes/expenses.js';
+import { init } from './src/config/database.js';
+import authRoutes from './src/routes/auth.js';
+import expenseRoutes from './src/routes/expenses.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -17,6 +17,21 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
+const allowedOrigins = [
+  'https://onchain-fantasy-game.vercel.app',
+  'http://localhost:3000'
+];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like from Postman)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) return callback(null, true);
+    return callback(new Error('Not allowed by CORS'));
+  },
+  credentials: true
+}));
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
