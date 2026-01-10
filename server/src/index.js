@@ -19,9 +19,9 @@ const PORT = process.env.PORT || 3000;
 // Middleware
 const allowedOrigins = [
   'https://expense-tracker-pied-ten.vercel.app',
-  'http://localhost:3000'
+  'http://localhost:3000',
+  'https://expense-tracker-kpun.vercel.app' // Your backend URL
 ];
-
 
 app.use(cors({
   origin: (origin, callback) => {
@@ -33,34 +33,33 @@ app.use(cors({
   credentials: true
 }));
 
-// app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Serve static files from client directory
 app.use(express.static(join(__dirname, '../../client')));
-
-
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/expenses', expenseRoutes);
+
+app.get("/api", (req, res) => res.send("expense Backend API"));
 
 // Health check
 app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'Server is running' });
 });
 
-// Initialize database and start server
-init()
-  .then(() => {
-    app.listen(PORT, () => {
-      console.log(`Server running on http://localhost:${PORT}`);
-    });
-  })
-  .catch((err) => {
-    console.error('Failed to initialize database:', err);
-    process.exit(1);
+// Initialize database immediately (not in .then)
+init().catch((err) => {
+  console.error('Failed to initialize database:', err);
+});
+
+// Only start server in local development
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
   });
+}
 
+// Export for Vercel serverless
 export default app;
-

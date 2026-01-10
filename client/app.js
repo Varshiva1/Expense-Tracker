@@ -3,7 +3,7 @@
 const API_BASE =
   window.location.hostname === 'localhost'
     ? 'http://localhost:3000/api'
-    : 'https://expenebackend.vercel.app/api';
+    : 'https://expense-tracker-kpun.vercel.app/api';
 
 // State
 let authToken = localStorage.getItem('authToken');
