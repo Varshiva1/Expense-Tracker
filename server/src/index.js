@@ -19,7 +19,6 @@ const PORT = process.env.PORT || 3000;
 // Middleware
 const allowedOrigins = [
   'http://localhost:3000',
-  'https://expense-tracker-kpun.vercel.app',
   'https://expense-tracker-pied-ten.vercel.app'
 ];
 
@@ -63,5 +62,4 @@ if (process.env.NODE_ENV !== 'production') {
   });
 }
 
-// Export for Vercel serverless
-export default app;
+// export default app;
