@@ -36,7 +36,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Serve static files from client directory
-// app.use(express.static(join(__dirname, '../../client')));
+app.use(express.static(join(__dirname, '../../client')));
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/expenses', expenseRoutes);
