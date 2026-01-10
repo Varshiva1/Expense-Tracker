@@ -1,5 +1,9 @@
 // API Configuration
-const API_BASE = '/api';
+// const API_BASE = '/api';
+const API_BASE =
+  window.location.hostname === 'localhost'
+    ? 'http://localhost:3000/api'
+    : 'https://expenebackend.vercel.app/api';
 
 // State
 let authToken = localStorage.getItem('authToken');
