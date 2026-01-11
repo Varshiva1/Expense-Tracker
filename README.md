@@ -67,7 +67,6 @@ Expense-Tracker/
 │   ├── vite.config.js          # Vite configuration
 │   └── tailwind.config.js      # Tailwind CSS configuration
 ├── package.json                # Root package.json (server dependencies)
-├── vercel.json                 # Vercel deployment configuration
 └── README.md
 ```
 
@@ -123,7 +122,7 @@ The backend follows the **MVC (Model-View-Controller)** pattern:
    DB_USER=postgres
    DB_PASSWORD=your_password
    JWT_SECRET=your_super_secret_jwt_key_change_this_in_production
-   PORT=5000
+   PORT=8000
    ```
 
 6. **Start the development servers**
@@ -132,7 +131,7 @@ The backend follows the **MVC (Model-View-Controller)** pattern:
    ```bash
    npm run dev
    ```
-   Server will run on `http://localhost:3000`
+   Server will run on `http://localhost:8000`
 
    **Terminal 2 - Frontend Development Server:**
    ```bash
@@ -142,30 +141,8 @@ The backend follows the **MVC (Model-View-Controller)** pattern:
    ```bash
    cd client && npm run dev
    ```
-   Frontend will run on `http://localhost:3001` (Vite default port)
+   Frontend will run on `http://localhost:3000` (Vite default port)
 
-7. **Access the application**
-   
-   Open your browser and navigate to `http://localhost:3001`
-
-## Production Build
-
-1. **Build the client**
-   ```bash
-   npm run client:build
-   ```
-   Or:
-   ```bash
-   cd client && npm run build
-   ```
-   This creates a `client/build` directory with optimized production files.
-
-2. **Start the production server**
-   ```bash
-   npm start:prod
-   ```
-   
-   The server will serve the built React app from `client/build` on `http://localhost:5000`
 
 ## API Endpoints
 
@@ -242,12 +219,9 @@ Indexes:
 
 ### Root Level
 - `npm start` - Start both backend and frontend development servers together
-- `npm start:prod` - Start production server (after building frontend)
 - `npm start:server` - Start production server only
 - `npm run dev` - Start backend development server only (with nodemon)
-- `npm run client` - Start frontend development server only (Vite)
-- `npm run client:build` - Build frontend for production
-- `npm run client:install` - Install client dependencies
+
 
 ### Client Level
 - `npm run dev` - Start Vite development server
@@ -255,31 +229,6 @@ Indexes:
 - `npm run preview` - Preview production build
 
 ## Deployment
-
-### Vercel Deployment (Backend Only)
-
-This project is configured to deploy **only the backend API** on Vercel.
-
-1. Push your code to GitHub
-2. Import the repository in Vercel
-3. Configure environment variables in Vercel dashboard
-4. Vercel will automatically build and deploy the backend API using `vercel.json`
-
-**Root Directory**: `.` (project root)
-
-**Backend Environment Variables** (set in Vercel dashboard):
-- `DB_HOST`
-- `DB_PORT`
-- `DB_NAME`
-- `DB_USER`
-- `DB_PASSWORD`
-- `JWT_SECRET`
-- `PORT` (optional, defaults to 5000)
-- `NODE_ENV` (set to `production`)
-
-**API Endpoints** will be available at:
-- `https://your-backend.vercel.app/api/*`
-- Example: `https://your-backend.vercel.app/api/health`
 
 **Frontend Deployment**:
 
