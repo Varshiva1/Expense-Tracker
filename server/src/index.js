@@ -14,9 +14,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8000;
 
-// Middleware - CORS configuration (allow all origins)
 app.use(cors({
   origin: true, // Allow all origins
   credentials: true,
