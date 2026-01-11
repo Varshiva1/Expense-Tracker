@@ -1,9 +1,7 @@
-import { useState, useEffect } from 'react';
 import { useExpenses } from '../context/ExpenseContext';
 
 const ExpensesList = () => {
-  const { expenses, deleteExpense, updateExpense } = useExpenses();
-  const [editingId, setEditingId] = useState(null);
+  const { expenses, deleteExpense, setEditingExpense } = useExpenses();
 
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this expense?')) {
@@ -12,9 +10,7 @@ const ExpensesList = () => {
   };
 
   const handleEdit = (expense) => {
-    setEditingId(expense.id);
-    // Populate form - this will be handled by ExpenseForm component
-    // For now, we'll just scroll to the form
+    setEditingExpense(expense); // 🔥 send data to form
     document.querySelector('.card')?.scrollIntoView({ behavior: 'smooth' });
   };
 
@@ -39,10 +35,13 @@ const ExpensesList = () => {
             className="bg-gray-50 p-4 rounded-lg flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-l-4 border-primary-500 hover:shadow-md hover:translate-x-1 transition-all duration-200"
           >
             <div className="flex-1">
-              <h4 className="text-lg font-semibold text-gray-900 mb-2">{expense.description}</h4>
+              <h4 className="text-lg font-semibold text-gray-900 mb-2">
+                {expense.description}
+              </h4>
               <div className="flex flex-wrap gap-4 text-sm text-gray-600">
                 <span>
-                  <strong className="font-semibold">Category:</strong> {expense.category}
+                  <strong className="font-semibold">Category:</strong>{' '}
+                  {expense.category}
                 </span>
                 <span>
                   <strong className="font-semibold">Date:</strong>{' '}

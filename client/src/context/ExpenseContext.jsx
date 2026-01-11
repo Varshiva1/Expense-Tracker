@@ -6,27 +6,29 @@ const ExpenseContext = createContext();
 
 export const useExpenses = () => {
   const context = useContext(ExpenseContext);
-  if (!context) {
-    throw new Error('useExpenses must be used within ExpenseProvider');
-  }
+  if (!context) throw new Error('useExpenses must be used within ExpenseProvider');
   return context;
 };
 
 export const ExpenseProvider = ({ children }) => {
   const { isAuthenticated } = useAuth();
+
   const [expenses, setExpenses] = useState([]);
   const [stats, setStats] = useState({ total: 0, byCategory: [], monthly: [] });
   const [filters, setFilters] = useState({ startDate: '', endDate: '', category: '' });
   const [loading, setLoading] = useState(false);
 
+  // 🔥 shared edit state
+  const [editingExpense, setEditingExpense] = useState(null);
+
   const loadExpenses = async () => {
     if (!isAuthenticated) return;
     try {
       setLoading(true);
-      const response = await expenseAPI.getAll(filters);
-      setExpenses(response.data);
-    } catch (error) {
-      console.error('Error loading expenses:', error);
+      const res = await expenseAPI.getAll(filters);
+      setExpenses(res.data);
+    } catch (e) {
+      console.error(e);
     } finally {
       setLoading(false);
     }
@@ -35,38 +37,33 @@ export const ExpenseProvider = ({ children }) => {
   const loadStats = async () => {
     if (!isAuthenticated) return;
     try {
-      const response = await expenseAPI.getStats(filters);
-      setStats(response.data);
-    } catch (error) {
-      console.error('Error loading stats:', error);
+      const res = await expenseAPI.getStats(filters);
+      setStats(res.data);
+    } catch (e) {
+      console.error(e);
     }
   };
 
-  const createExpense = async (expenseData) => {
+  const createExpense = async (data) => {
     try {
-      const response = await expenseAPI.create(expenseData);
+      const res = await expenseAPI.create(data);
       await loadExpenses();
       await loadStats();
-      return { success: true, data: response.data };
-    } catch (error) {
-      return {
-        success: false,
-        error: error.response?.data?.error || error.message || 'Failed to create expense',
-      };
+      return { success: true, data: res.data };
+    } catch (e) {
+      return { success: false, error: e.message };
     }
   };
 
-  const updateExpense = async (id, expenseData) => {
+  const updateExpense = async (id, data) => {
     try {
-      const response = await expenseAPI.update(id, expenseData);
+      const res = await expenseAPI.update(id, data);
       await loadExpenses();
       await loadStats();
-      return { success: true, data: response.data };
-    } catch (error) {
-      return {
-        success: false,
-        error: error.response?.data?.error || error.message || 'Failed to update expense',
-      };
+      setEditingExpense(null); // 🔥 reset edit mode
+      return { success: true, data: res.data };
+    } catch (e) {
+      return { success: false, error: e.message };
     }
   };
 
@@ -75,12 +72,8 @@ export const ExpenseProvider = ({ children }) => {
       await expenseAPI.delete(id);
       await loadExpenses();
       await loadStats();
-      return { success: true };
-    } catch (error) {
-      return {
-        success: false,
-        error: error.response?.data?.error || error.message || 'Failed to delete expense',
-      };
+    } catch (e) {
+      console.error(e);
     }
   };
 
@@ -104,6 +97,10 @@ export const ExpenseProvider = ({ children }) => {
         deleteExpense,
         loadExpenses,
         loadStats,
+
+        // 🔥 expose edit state
+        editingExpense,
+        setEditingExpense,
       }}
     >
       {children}
