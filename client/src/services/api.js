@@ -1,10 +1,11 @@
 import axios from 'axios';
 
-// API Base URL - Change this environment variable when deploying
-// Development: uses proxy from vite.config.js (/api)
-// Production: Set VITE_API_BASE in .env file to your backend URL
-const API_BASE = 'http://localhost:8000/api';
-// const API_BASE = import.meta.env.VITE_API_BASE || '/api';
+const API_BASE =
+  window.location.hostname === 'localhost'
+    ? 'http://localhost:8000/api'
+    : 'https://expense-tracker-18cd.onrender.com/api';
+
+
 
 const api = axios.create({
   baseURL: API_BASE,
