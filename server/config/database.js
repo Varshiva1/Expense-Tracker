@@ -1,16 +1,21 @@
 import pg from 'pg';
 import dotenv from 'dotenv';
-dotenv.config();
+import path from 'path';
+
+// force dotenv to load .env from /server
+dotenv.config({ path: path.resolve(process.cwd(), 'server/.env') });
 
 const { Pool } = pg;
+
 
 const pool = new Pool({
   host: process.env.DB_HOST || 'localhost',
   port: process.env.DB_PORT || 5432,
   database: process.env.DB_NAME || 'expense_tracker',
   user: process.env.DB_USER || 'postgres',
-  password: process.env.DB_PASSWORD,
+  password: process.env.DB_PASSWORD||'123456',
 });
+
 
 // Test connection
 pool.on('connect', () => {

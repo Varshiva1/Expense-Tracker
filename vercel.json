@@ -2,32 +2,28 @@
   "version": 2,
   "builds": [
     {
-      "src": "server/src/index.js",
+      "src": "server/index.js",
       "use": "@vercel/node"
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/api/:path*",
-      "destination": "/server/src/index.js"
     }
   ],
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "/server/src/index.js"
-    },
-    {
-      "src": "/(.*\\.(html|css|js|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot))",
-      "dest": "/client/$1"
+      "dest": "/server/index.js"
     },
     {
       "src": "/(.*)",
-      "dest": "/client/index.html"
+      "dest": "/server/index.js"
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "/server/index.js"
     }
   ],
   "functions": {
-    "server/src/index.js": {
+    "server/index.js": {
       "maxDuration": 30
     }
   }
