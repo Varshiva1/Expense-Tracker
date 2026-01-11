@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { authAPI } from '../services/api';
+import api from '../services/api';   // 🔥 ADD THIS
 
 const AuthContext = createContext();
 
@@ -19,22 +20,18 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const token = localStorage.getItem('authToken');
     if (token) {
-      verifyToken(token);
+      verifyToken();
     } else {
       setLoading(false);
     }
   }, []);
 
-  const verifyToken = async (token) => {
+  // 🔥 FIXED: now uses axios instance with correct backend URL
+  const verifyToken = async () => {
     try {
-      const response = await fetch('/api/expenses', {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      });
-      if (response.ok) {
+      const response = await api.get('/expenses');
+      if (response.status === 200) {
         setIsAuthenticated(true);
-        // Get user info from token or make a separate call
       } else {
         logout();
       }
@@ -72,7 +69,11 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       return {
         success: false,
-        error: error.response?.data?.error || error.response?.data?.errors?.[0]?.msg || error.message || 'Registration failed',
+        error:
+          error.response?.data?.error ||
+          error.response?.data?.errors?.[0]?.msg ||
+          error.message ||
+          'Registration failed',
       };
     }
   };
@@ -84,7 +85,9 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, loading, login, register, logout }}>
+    <AuthContext.Provider
+      value={{ isAuthenticated, user, loading, login, register, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );
