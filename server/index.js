@@ -54,16 +54,16 @@ if (process.env.NODE_ENV !== 'production') {
 
 // Serve static files from client directory (only in production)
 // In development, Vite dev server handles the frontend
-if (process.env.NODE_ENV === 'production' && process.env.VERCEL !== '1' && !process.env.VERCEL_ENV) {
+// if (process.env.NODE_ENV === 'production' && process.env.VERCEL !== '1' && !process.env.VERCEL_ENV) {
   app.use(express.static(join(__dirname, '../client/build')));
   
   // SPA fallback - serve index.html for all non-API routes
-  app.get('*', (req, res) => {
-    if (!req.path.startsWith('/api')) {
-      res.sendFile(join(__dirname, '../client/build/index.html'));
-    }
-  });
-}
+//   app.get('*', (req, res) => {
+//     if (!req.path.startsWith('/api')) {
+//       res.sendFile(join(__dirname, '../client/build/index.html'));
+//     }
+//   });
+// }
 
 // Export for Vercel serverless functions
 export default app;
