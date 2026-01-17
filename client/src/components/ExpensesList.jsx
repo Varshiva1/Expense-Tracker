@@ -51,7 +51,7 @@ const ExpensesList = () => {
             </div>
             <div className="flex items-center gap-3">
               <div className="text-2xl font-bold text-red-600">
-                ${parseFloat(expense.amount).toFixed(2)}
+              ₹{parseFloat(expense.amount).toFixed(2)}
               </div>
               <div className="flex gap-2">
                 <button
